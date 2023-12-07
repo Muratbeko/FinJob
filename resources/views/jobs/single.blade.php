@@ -18,6 +18,11 @@
       </div>
     </section>
 
+    @if(\Session::has('save'))
+    <div class="alert alert-success">
+        <p>{!! \Session::get('save') !!}</p>
+    </div> 
+    @endif I
     
     <section class="site-section">
       <div class="container">
@@ -75,13 +80,27 @@
 
             <div class="row mb-5">
               <div class="col-6">
-                <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Save Job</a>
+                <form action="{{ route('save.job')}}" method="POST">
+                @csrf
+                <input name="job_id" type="hidden" value="{{$job->id}}">
+                <input name="user_id" type="hidden" value="{{Auth::user()->id}}">
+                <input name="job_image" type="hidden" value="{{$job->image}}">
+                <input name="job_title"  type="hidden" value="{{$job->job_title}}">
+                <input name="job_region" type="hidden"  value="{{$job->job_region}}">
+                <input name="job_type" type="hidden" value="{{$job->job_type}}">
+                <input name="company" type="hidden" value="{{$job->company}}">
+                @if ($savedJob > 0)
+                <button class="btn btn-block btn-success btn-md" diasbled>you saved this job</button>
+                @else 
+                <button name="submit" type="submit" class="btn btn-block btn-light btn-md">Save Job</button>
+                @endif
+              </form>
               </div>
               <div class="col-6">
-                <a href="#" class="btn btn-block btn-primary btn-md">Apply Now</a>
-              </div>
+                <button class="btn btn-block btn-primary btn-md">Apply Now</button>                      
+                 </div>
             </div>
-
+            
           </div>
           <div class="col-lg-4">
             <div class="bg-light p-3 border rounded mb-4">
@@ -101,7 +120,7 @@
             <div class="bg-light p-3 border rounded">
               <h3 class="text-primary  mt-3 h5 pl-3 mb-3 ">Share</h3>
               <div class="px-3">
-                <a href="https://www.facebook.com/sharer/sharer.php?u{{route('single.job', $job->id)}}=&quote={{$job->job_title}}" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-facebook"></span></a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{route('single.job', $job->id)}}&quote={{$job->job_title}}" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-facebook"></span></a>
                 <a href="https://twitter.com/intent/tweet?text={{$job->job_title}}&url={{route('single.job', $job->id)}}" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-twitter"></span></a>
                 <a href="https://www.linkedin.com/sharing/share-offsite/?url={{route('single.job', $job->id)}}" class="pt-3 pb-3 pr-3 pl-0"><span class="icon-linkedin"></span></a>
               </div>
