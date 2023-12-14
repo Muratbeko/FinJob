@@ -1,25 +1,20 @@
-@extends('layouts.app')
-
-@section('content')
 
  <!-- HOME -->
  <section class="section-hero overlay inner-page bg-image" style="background-image: url('{{asset('assets/images/hero_1.jpg')}}'); margin-top: -24px" id="home-section">
       <div class="container">
         <div class="row">
           <div class="col-md-7">
-            <h1 class="text-white font-weight-bold">{{$job->job_title}}</h1>
+            <h1 class="text-white font-weight-bold">Category</h1>
             <div class="custom-breadcrumbs">
               <a href="#">Home</a> <span class="mx-2 slash">/</span>
               <a href="#">Job</a> <span class="mx-2 slash">/</span>
-              <span class="text-white"><strong>{{$job->job_title}}</strong></span>
+              <span class="text-white"><strong>Category</strong></span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-
-    
     <div class="container">
     @if(\Session::has('save'))
     <div class="alert alert-success">
@@ -46,10 +41,6 @@
     @endif 
    </div>
     
-
-
-
-
     <section class="site-section">
       <div class="container">
         <div class="row align-items-center mb-5">
@@ -70,12 +61,7 @@
           </div>
           <div class="col-lg-4">
             <div class="row">
-              <div class="col-6">
-                <a href="#" class="btn btn-block btn-light btn-md"><span class="icon-heart-o mr-2 text-danger"></span>Save Job</a>
-              </div>
-              <div class="col-6">
-                <a href="#" class="btn btn-block btn-primary btn-md">Apply Now</a>
-              </div>
+          
             </div>
           </div>
         </div>
@@ -116,7 +102,7 @@
                 <input name="job_type" type="hidden" value="{{$job->job_type}}">
                 <input name="company" type="hidden" value="{{$job->company}}">
                 @if ($savedJob > 0)
-                <button class="btn btn-block btn-success btn-md" diasbled>you saved this job</button>
+                <button class="btn btn-block btn-success btn-md" disabled>you saved this job</button>
                 @else 
                 <button name="submit" type="submit" class="btn btn-block btn-light btn-md">Save Job</button>
                 @endif
@@ -132,7 +118,11 @@
                 <input name="job_region" type="hidden"  value="{{$job->job_region}}">
                 <input name="job_type" type="hidden" value="{{$job->job_type}}">
                 <input name="company" type="hidden" value="{{$job->company}}">
+                @if ($appliedJob > 0)
+                <button class="btn btn-block btn-primary btn-md" disabled>You applied to this job</button> 
+                @else
                 <button name="submit" type="submit" class="btn btn-block btn-primary btn-md">Apply Now</button> 
+                @endif
                 </form>                     
                  </div>
             </div>
@@ -162,6 +152,17 @@
               </div>
             </div>
 
+
+
+            <div class="bg-light p-3 border rounded mb-4">
+              <h3 class="text-primary  mt-3 h5 pl-3 mb-3 ">Categories</h3>
+              <ul class="list-unstyled pl-3 mb-0">
+             @foreach($categories as $category)
+
+             <li class="mb-2"><a class="text-decoration-none" href="{{route('categories.single', $category->name)}}"> {{$category->name}}</a></li>
+             @endforeach
+                </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -201,11 +202,6 @@
             
           </li>
         @endforeach
-    
-   
-
-          
-
           
         </ul>
 
@@ -213,8 +209,4 @@
 
       </div>
     </section>
-    
-
-
-
 @endsection
