@@ -11,13 +11,13 @@
           <div class="card p-3 py-4">
 
             <div class="text-center">
-                <img src="{{asset('assets/images_users/'.$profile->image.'')}}" width="100" class="rounded-circle">
+                <img src="{{asset('assets/images_users/'.$profile->Image.'')}}" width="100" class="rounded-circle">
                </div>
 
                <div class="text-center mt-3">
                 <h5 class="mt-2 mb-0">{{ $profile->name }}</h5>
                 <span>{{ $profile->job_title }}</span>
-
+               <a href="{{asset('assets/cvs/'.$profile->cv.'')}}" class="btn btn-success btn-block text-white">Download CV</a>
                 <div class="px-4 mt-1">
               <p class="fonts">
                 {{ $profile->bio }}

@@ -1,14 +1,17 @@
+@extends('layouts.app')
+
+@section('content')
 
  <!-- HOME -->
  <section class="section-hero overlay inner-page bg-image" style="background-image: url('{{asset('assets/images/hero_1.jpg')}}'); margin-top: -24px" id="home-section">
       <div class="container">
         <div class="row">
           <div class="col-md-7">
-            <h1 class="text-white font-weight-bold">Category</h1>
+            <h1 class="text-white font-weight-bold">{{$job->job_title}}</h1>
             <div class="custom-breadcrumbs">
               <a href="#">Home</a> <span class="mx-2 slash">/</span>
               <a href="#">Job</a> <span class="mx-2 slash">/</span>
-              <span class="text-white"><strong>Category</strong></span>
+              <span class="text-white"><strong>{{$job->job_title}}</strong></span>
             </div>
           </div>
         </div>
