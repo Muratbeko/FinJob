@@ -8,6 +8,7 @@ use App\Models\Job\Job;
 use App\Models\Job\JobSaved;
 use App\Models\Category\Category;
 use App\Models\Job\Application;
+use App\Models\Job\Search;
 use Auth;
 class JobsController extends Controller
 {
@@ -31,6 +32,9 @@ $relatedJobsCount=Job::where('category',$job->category)
 
 
 //save job
+if(auth()->user())
+{
+
 
 $savedJob=JobSaved::where('job_id',$id)
 ->where('user_id', Auth::user()->id)
@@ -45,7 +49,7 @@ $appliedJob=Application::where('user_id', Auth::user()->id)
 ->where('job_id',$id)
 ->count();
 
-
+}
 //categories
   $categories=Category::all();
 
@@ -97,6 +101,29 @@ return redirect('/jobs/single/'.$request->job_id.'')->with('save', 'job saved su
           return redirect('/jobs/single/'.$request->job_id.'')->with('applied', 'you applied to this job successfully');
           }}}
 
+
+          public function search(Request $request)
+          {   
+            Request()->validate([
+              "job_title"=>"required",
+              "job_region"=>"required",
+              "job_type"=>"required",]);
+              Search::create([
+                "keyword" => $request->job_title
+            ]);
+            
+            $job_title = $request->get('job_title');
+            $job_region = $request->get('job_region');
+            $job_type = $request->get('job_type');
+            
+            $searches = Job::select()
+                ->where('job_title', 'like', '%' . $job_title . '%')
+                ->where('job_region', 'like', '%' . $job_region . '%')
+                ->where('job_type', 'like', '%' . $job_type . '%')
+                ->get();
+            
+            return view('jobs.search', compact('searches'));}
+            
     public function about()
     {   
         return view('pages.about');
