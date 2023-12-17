@@ -27,8 +27,8 @@ class HomeController extends Controller
         $jobs=Job::select()->take(5)->orderby('id','desc')->get();
         $totalJobs=Job::all()->count();
 
-
-
         return view('home', compact('jobs','totalJobs'));
     }
+ 
+
 }

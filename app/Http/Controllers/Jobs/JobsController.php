@@ -95,15 +95,16 @@ return redirect('/jobs/single/'.$request->job_id.'')->with('save', 'job saved su
 
         if($applyJob){
           return redirect('/jobs/single/'.$request->job_id.'')->with('applied', 'you applied to this job successfully');
-          }
+          }}}
 
-      }
-
-
-
-
+    public function about()
+    {   
+        return view('pages.about');
     }
 
-
+    public function contact()
+    {
+        return view('pages.contact');
+    }
 
 }

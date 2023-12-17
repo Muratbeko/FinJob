@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Job\Application;
 use App\Models\Job\JobSaved;
 use Auth;
+use File;
 class UsersController extends Controller
 {
    public function profile(){
@@ -26,7 +27,7 @@ class UsersController extends Controller
 
      public function savedJobs(){
 
-      $savedJobs=JobSaved::where('user_id', '=',Auth::user()->id)
+      $savedJobs=JobSaved::where('user_id', '=', Auth::user()->id)
       ->get();
       return view('users.savedjobs', compact('savedJobs'));
      }
@@ -37,4 +38,68 @@ class UsersController extends Controller
       $userDetails=User::find(Auth::user()->id);
       return view('users.editdetails', compact('userDetails'));
      }
+
+     public function updateDetails(Request $request){
+
+Request()->validate([
+   "name"=>"required|max:40",
+   "job_title"=>"required|max:40",
+   "bio"=>"required",
+   "facebook"=>"required|max:140",
+   "twitter"=>"required|max:140",
+   "linkedin"=>"required|max:140"
+
+]);
+
+      $userDetailsUpdate=User::find(Auth::user()->id);
+      $userDetailsUpdate->update([
+         "name"=>$request->name,
+         "job_title"=>$request->job_title,
+         "bio"=>$request->bio,
+         "facebook"=>$request->facebook,
+         "twitter"=>$request->twitter,
+         "linkedin"=>$request->linkedin,
+      ]);
+      if($userDetailsUpdate)
+{
+return redirect('/users/edit-details/')->with('update', 'User details updated successfully');
+}
+     }
+
+
+
+
+     public function editCV(){
+
+      return view('users.editcv');
+     }
+
+public function updateCV(Request $request)
+{
+$oldCV=User::find(Auth::user()->id);
+
+if(File::exists(public_path('assets/cvs/'. $oldCV->cv))){
+   File::delete(public_path('assets/cvs/'. $oldCV->cv));
+}
+else{
+
+}
+
+
+
+
+$destinationPath='/assets/cvs/';
+   $mycv=$request->cv->getClientOriginalName();
+   $request->cv->move(public_path($destinationPath), $mycv);
+
+   $oldCV->update([
+   "cv"=>$mycv
+
+
+   ]);
+
+
+return redirect('/users/profile')->with('update', 'CV updated succesfully');
+
+}
 }

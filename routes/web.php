@@ -14,23 +14,39 @@ use App\Http\Controllers\JobsController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome'); 
 });
 
 Auth::routes();
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/about', [App\Http\Controllers\Jobs\JobsController::class, 'about'])->name('about');
+Route::get('/contact', [App\Http\Controllers\Jobs\JobsController::class, 'contact'])->name('contact');
 
 
-Route::get('/jobs/single/{id}',[App\Http\Controllers\Jobs\JobsController::class, 'single'])->name('single.job');
-Route::post('/jobs/save',[App\Http\Controllers\Jobs\JobsController::class, 'saveJob'])->name('save.job');
-Route::post('/jobs/apply',[App\Http\Controllers\Jobs\JobsController::class, 'jobApply'])->name('apply.job');
-Route::get('/categories/single/{name}',[App\Http\Controllers\Categories\CategoriesController::class, 'singleCategory'])->name('categories.single');
+Route::group(['prefix'=>'jobs'], function()
+{
+    Route::get('single/{id}',[App\Http\Controllers\Jobs\JobsController::class, 'single'])->name('single.job');
+    Route::post('save',[App\Http\Controllers\Jobs\JobsController::class, 'saveJob'])->name('save.job');
+    Route::post('apply',[App\Http\Controllers\Jobs\JobsController::class, 'jobApply'])->name('apply.job');
+});
+Route::group(['prefix'=>'categories'], function()
+{
+    Route::get('single/{name}',[App\Http\Controllers\Categories\CategoriesController::class, 'singleCategory'])->name('categories.single');
 
 
-Route::get('/users/profile',[App\Http\Controllers\Users\UsersController::class, 'profile'])->name('profile');
-Route::get('/users/applications',[App\Http\Controllers\Users\UsersController::class, 'applications'])->name('applications');
-Route::get('/users/savedjobs',[App\Http\Controllers\Users\UsersController::class, 'savedjobs'])->name('saved.jobs');
+});
+Route::group(['prefix'=>'users'], function()
+{    
+
+    Route::get('profile',[App\Http\Controllers\Users\UsersController::class, 'profile'])->name('profile');
+Route::get('applications',[App\Http\Controllers\Users\UsersController::class, 'applications'])->name('applications');
+Route::get('savedjobs',[App\Http\Controllers\Users\UsersController::class, 'savedjobs'])->name('saved.jobs');
 
 
-Route::get('/users/edit-details',[App\Http\Controllers\Users\UsersController::class, 'editDetails'])->name('edit.details');
+Route::get('edit-details',[App\Http\Controllers\Users\UsersController::class, 'editDetails'])->name('edit.details');
+Route::post('edit-details',[App\Http\Controllers\Users\UsersController::class, 'updateDetails'])->name('update.details');
+  
+Route::get('edit-cv',[App\Http\Controllers\Users\UsersController::class, 'editCV'])->name('edit.cv');
+Route::post('edit-cv',[App\Http\Controllers\Users\UsersController::class, 'updateCV'])->name('update.cv');
+                                                                                                                                                            
+});
